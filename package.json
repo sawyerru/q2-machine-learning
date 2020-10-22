@@ -1,8 +1,12 @@
 {
   "name": "q2-machine-learning",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Machine Learning package for Q2 Strategies implementing various generic algorithms",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sawyerru/q2-machine-learning.git"
+  },
   "scripts": {
     "test": "node tests/data-manipulator.test.js && node tests/clustering.test.js && node tests/association.test.js && node tests/decision-tree.test.js && node tests/linear-regression.test.js && node tests/naive-bayes.test.js && node tests/neural-network.test.js && node tests/pca.test.js && node tests/random-forest.test.js && node tests/svm.test.js"
   },
