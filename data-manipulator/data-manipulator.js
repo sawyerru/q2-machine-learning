@@ -6,7 +6,6 @@
  */
 
 const tf = require('@tensorflow/tfjs');
-const got = require('got');
 
 /**
  * @private
