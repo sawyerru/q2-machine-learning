@@ -276,7 +276,7 @@ class DataManipulator {
     /**
      * @public
      * Export X and Y arrays as tensors returns [X, Y]
-     * @returns {Array} [Feature Matrix, Label Matrix]
+     * @returns {Tensor} [Feature Matrix, Label Matrix]
      */
     exportData(labels = true) {
         if (labels) {

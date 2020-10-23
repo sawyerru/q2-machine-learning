@@ -189,7 +189,7 @@ class DecisionTreeClassifier extends BaseModel{
             const [infoGain, condition] = calculateDecision(data, random_subspace);
     
             // Base case:
-            if (infoGain == 0) {
+            if (infoGain === 0) {
                 return new LeafNode(data);
             }
             
@@ -234,7 +234,6 @@ class DecisionTreeClassifier extends BaseModel{
      * @param {string} spacing string used in formatting
      */
     display() {
-
         // Recursive wrapper to encapsulate method
         let displayHelper = (node, spacing='') => {
             if (node.isLeaf) {
