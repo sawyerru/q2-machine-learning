@@ -7,15 +7,30 @@
     "type": "git",
     "url": "git+https://github.com/sawyerru/q2-machine-learning.git"
   },
+  "keywords": [
+    "machine-learning",
+    "javascript",
+    "neural network",
+    "clustering",
+    "naive bayes",
+    "decision trees",
+    "random forest",
+    "principle component",
+    "node",
+    "data science",
+    "data analysis"
+  ],
   "scripts": {
     "test": "node tests/data-manipulator.test.js && node tests/clustering.test.js && node tests/association.test.js && node tests/decision-tree.test.js && node tests/linear-regression.test.js && node tests/naive-bayes.test.js && node tests/neural-network.test.js && node tests/pca.test.js && node tests/random-forest.test.js && node tests/svm.test.js"
   },
-  "author": "",
+  "author": "Sawyer Ruben",
   "license": "ISC",
   "dependencies": {
     "@tensorflow/tfjs": "^2.4.0",
     "@tensorflow/tfjs-vis": "^1.4.3",
-    "got": "^11.7.0",
     "mathjs": "^7.3.0"
+  },
+  "devDependencies": {
+    "got": "^11.7.0"
   }
 }

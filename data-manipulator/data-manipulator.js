@@ -136,21 +136,12 @@ class DataManipulator {
     /**
      * @public
      * Take URL string/file as a csv and a config object to create a Feature Matrix, Label Matrix and JSON Object for items
-     * @param {String} urlString path to file
+     * @param {Array} data of raw data (rows should be comma delimited strings)
      * @returns nothing
      */
-    async loadCsv(urlString) {
-        let _fetchedData = '';
-        // Make API request to get data from source 
-        try {
-            const response = await got(urlString);
-            _fetchedData = response.body;
-        } catch (error) {
-            console.log(error);
-            //=> 'Internal server error ...'
-        }   
+    async loadCsv(data) {
 
-        const allLines = _fetchedData.split('\n');
+        const allLines = data.split('\n');
         allLines.forEach( (sample, idx) => {
             const row = sample.split(',').map( v => {
                 return (isNaN(Number(v))) ? v.trim() : Number(v);

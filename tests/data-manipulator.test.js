@@ -1,10 +1,12 @@
 const DataManipulator = require('../data-manipulator/data-manipulator');
+const got = require('got')
 
 const test = async () => {
     console.log('Data Manipulation Tests');
     const url = 'https://raw.githubusercontent.com/sawyerru/q2-data/master/student-data-1class.csv';
+    const res = await got(url);
     const manipulator = new DataManipulator();
-    await manipulator.loadCsv(url);
+    await manipulator.loadCsv(res.body);
 
     console.assert(manipulator.fullData.length > 0, 'Did not load data properly');
     console.assert(manipulator.getColumnHeaders() !== undefined, 'Column Headers not returned properly');
