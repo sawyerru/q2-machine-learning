@@ -1,6 +1,6 @@
 {
   "name": "q2-machine-learning",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Machine Learning package for Q2 Strategies implementing various generic algorithms",
   "main": "index.js",
   "repository": {
