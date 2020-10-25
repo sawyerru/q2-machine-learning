@@ -1,3 +1,7 @@
+/*
+Principle Component Analysis Tests
+Author: Sawyer Ruben
+ */
 const PCASelector = require('../pca/pca');
 const DataManipulator = require('../data-manipulator/data-manipulator');
 
@@ -11,11 +15,13 @@ const test = async () => {
 
     await manip.loadCsv(resp.body);
 
-    const pca = new PCASelector();
+    const pca = new PCASelector(); // create PCA selector
+
     console.assert(pca.principleColumns.length === 0 && pca.principleComponents.length === 0,
         'Invalid principle sizes');
     const data = manip.exportData(false);
 
+    // Execute Principle Component Analysis and return principle components and principle column indicies
     const [principleComps, principleCols] = pca.select(data);
     console.assert(principleComps.length > 0 && principleCols.length > 0,
         'No princple components selected');

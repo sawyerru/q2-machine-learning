@@ -35,6 +35,8 @@ For NeuralNetwork you can also import 2 supporting functions to inform model sel
 - runTest
 
 ## You can find examples of how each Class can function work in examples/
-## Run tests
+### Run tests
 `npm test`
+
+### Examples are found in tests/
 

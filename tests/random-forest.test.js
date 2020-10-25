@@ -1,3 +1,7 @@
+/*
+Random Forest Test
+Author: Sawyer Ruben
+ */
 const RandomForestClassifier = require('../decision-trees/random-forest');
 const DataManipulator = require('../data-manipulator/data-manipulator');
 
@@ -11,15 +15,18 @@ const test = async () => {
   await manipulator.loadCsv(resp.body);
   console.assert(manipulator.fullData.length > 0, 'Data not loaded successfully ');
 
+  // Split train and test
   const trainData = manipulator.fullData.slice(1, 101);
   const testData = manipulator.fullData.slice(101, manipulator.fullData.length);
 
   const forest = new RandomForestClassifier();
   console.assert(forest.forest.length === 0, 'invalid construction');
-  await forest.build(trainData);
+
+  await forest.build(trainData); // build tree from training data
+
   console.assert(forest.forest.length > 0, 'invalid construction');
 
-  const pred = forest.predict(testData);
+  const pred = forest.predict(testData); // run test data through tree creation
   console.assert(pred > 0, 'invalid prediction');
 
   console.log('All Tests Passed');

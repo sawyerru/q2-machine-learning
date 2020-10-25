@@ -1,3 +1,7 @@
+/*
+Data Manipulation Tests
+Author: Sawyer Ruben
+ */
 const DataManipulator = require('../data-manipulator/data-manipulator');
 const got = require('got')
 
@@ -14,11 +18,11 @@ const test = async () => {
     console.assert(manipulator.getFeatureSize()[1] === 30, 'dimensons not all gathered');
 
     const config = {
-        labelHeading: 'G3',
-        labelType: 'numeric',
-        excludeColumns: [],
-        categoricalCols: {
-          school: {GP: 0, MS: 1},
+        labelHeading: 'G3', // define which column is label
+        labelType: 'numeric', // define what type of label (numeric or categorical)
+        excludeColumns: [], // exclude columns (list of headings)
+        categoricalCols: { // Categorical columns object (keys are column headings)
+          school: {GP: 0, MS: 1}, // column should have all options for category (key is name of option, value is translated value)
           sex: {F: 0, M: 1},
           address: {R: 0, U: 1},
           famsize: {LE3: 0, GT3: 1},
@@ -37,23 +41,23 @@ const test = async () => {
           romantic: {no: 0, yes: 1},
         }
     }
-    manipulator.processData(config);
+    manipulator.processData(config); // process data with config to do one-hot encoding, translation, and observation
 
     console.assert(manipulator.X.length > 0, 'Feature matrix not processed');
     console.assert(manipulator.Y.length > 0, 'Label matrix not processed');
     console.assert(manipulator.jsonData.length > 0, 'Json data not processed');
 
     const normalizationTechniques = ['zscore', 'clip'] // zscore is most common and default in normalize function
-    manipulator.normalize();
+    manipulator.normalize(); // normalize data with techniques
 
     const preShuffle = manipulator.fullData[0];
-    manipulator.shuffle();
+    manipulator.shuffle(); // shuffle data
     const postShuffle = manipulator.fullData[0];
 
     console.assert(preShuffle !== postShuffle, 'Not Shuffled');
 
-    [this.features, this.labels] = manipulator.exportData();
-    const [xTrain, yTrain, xTest, yTest] = manipulator.split();
+    const [features, labels] = manipulator.exportData(); // export data as tensor objects for next steps
+    const [xTrain, yTrain, xTest, yTest] = manipulator.split(); // split data into train, test, and can pass a threshold to get validation
 
     console.log('All Tests Passed');
 };

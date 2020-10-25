@@ -1,8 +1,13 @@
+/*
+Neural Network Tests
+Author: Sawyer Ruben
+ */
 const NeuralNetwork = require('../neural-network/neural-net');
 const DataManipulator = require('../data-manipulator/data-manipulator');
 
 const got = require('got');
 
+// Defining config object for data
 const config = {
   labelHeading: 'G3',
   labelType: 'numeric',
@@ -28,51 +33,56 @@ const config = {
   }
 };
 
+// Test Neural Net with Numeric Classes
 const test_num = async () => {
   console.log('Neural Network Tests (Numerical Classes)');
   const url = 'https://raw.githubusercontent.com/sawyerru/q2-data/master/student-data-1class.csv';
   const resp = await got(url);
 
   const manipulator = new DataManipulator();
-  await manipulator.loadCsv(resp.body);
+  await manipulator.loadCsv(resp.body); // load csv into manipulator object
 
-  manipulator.processData(config);
-  manipulator.normalize();
+  manipulator.processData(config); // process data and convert into Tensors
+  manipulator.normalize(); // Normalize data points
   console.assert(manipulator.X.length > 0 && manipulator.X[0].length > 0, "X not processed");
   console.assert(manipulator.Y.length > 0, "X not processed");
 
-  const [features, labels] = manipulator.exportData();
+  const [features, labels] = manipulator.exportData(); // Export data
   console.assert(features.shape[0] === labels.shape[0], "unevent sample size");
 
-  const sample = features.slice([0, 0], [1, 43]);
+  const sample = features.slice([0, 0], [1, 43]); // extract sample
   const feats = features.shape[1];
 
-  const neuralNet = new NeuralNetwork();
+  const neuralNet = new NeuralNetwork(); // create neural net object
+
+  // define neural net configuration
   const nn_config = {
-    inputDims: feats,
-    architecture: [60, 20],
-    outputClasses: 1,
-    activationF: 'relu',
-    optimizerF: 'adam',
-    lossF: 'meanSquaredError'
+    inputDims: feats,         //should be number of features
+    architecture: [60, 20],   // array length denotes number of hidden layers, elements are units in layer
+    outputClasses: 1,         // final output classes (output layer)
+    activationF: 'relu',      // unit activation function (more options defined in Tensorflow.js specs)
+    optimizerF: 'adam',       // neural net optimizer function (more options defined in Tensorflow.js specs)
+    lossF: 'meanSquaredError' // loss function defined in Tensorflow.js
   };
 
   try { neuralNet.getModel(); }
   catch(err) { console.assert(err !== undefined, 'Error not caught'); }
 
+  // build and compile neural network config
   neuralNet.build(nn_config);
 
   console.assert(neuralNet.getModel() !== undefined, 'Model still not defined');
-  await neuralNet.train(features, labels);
+  await neuralNet.train(features, labels); // train model with features and labels
 
   const label = manipulator.Y[0];
 
-  const pred = neuralNet.predict(sample);
+  const pred = neuralNet.predict(sample); // predict a numerical score from a sample
   console.assert(label-1 <= pred <= label+1, 'Label too far off');
 
-  neuralNet.clean();
+  neuralNet.clean(); // clean unnecessary tensors for browser memory
 }
 
+// Neural Network testing classification
 const test_category = async () => {
   console.log('Neural Network Tests (5 Classes)');
 
@@ -81,6 +91,7 @@ const test_category = async () => {
   const resp = await got(url);
   await manipulator.loadCsv(resp.body);
 
+  // label type change in configuration object to change to classification output
   config.labelType = 'categorical';
   config.categoricalCols["G3"] = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4};
 
@@ -101,7 +112,7 @@ const test_category = async () => {
     outputClasses: 5,
     activationF: 'relu',
     optimizerF: 'adam',
-    lossF: 'categoricalCrossentropy'
+    lossF: 'categoricalCrossentropy' // change loss function for classification (if not defined this will be changed automatically)
   };
 
   try { neuralNet.getModel(); }
@@ -114,8 +125,8 @@ const test_category = async () => {
   await neuralNet.train(features, labels);
   const label = manipulator.Y[0];
 
-  // const pred = neuralNet.predict(sample);
-  // console.assert(label-1 <= pred <= label+1, 'Label too far off');
+  const pred = neuralNet.predict(sample);
+  console.assert(0 <= pred <= 4, 'Label too far off');
 
   neuralNet.clean();
 }

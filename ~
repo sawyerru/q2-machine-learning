@@ -1,0 +1,21 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch main
+# Your branch is ahead of 'origin/main' by 3 commits.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	modified:   decision-trees/decision-tree.js
+#	modified:   decision-trees/random-forest.js
+#	modified:   linear-regression/linear-regression.js
+#	modified:   naive-bayes/naive-bayes.js
+#	modified:   neural-network/neural-net.js
+#	modified:   tests/clustering.test.js
+#	modified:   tests/decision-tree.test.js
+#	modified:   tests/linear-regression.test.js
+#	modified:   tests/naive-bayes.test.js
+#	modified:   tests/neural-network.test.js
+#	modified:   tests/pca.test.js
+#	modified:   tests/random-forest.test.js
+#

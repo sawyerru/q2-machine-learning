@@ -1,3 +1,7 @@
+/*
+Naive Bayes Tests
+Author: Sawyer Ruben
+ */
 const NaiveBayesClassifier = require('../naive-bayes/naive-bayes');
 const DataManipulator = require('../data-manipulator/data-manipulator');
 
@@ -9,6 +13,8 @@ const test = async () => {
   const manipulator = new DataManipulator();
   const resp = await got(url);
   await manipulator.loadCsv(resp.body);
+
+  // define config object for categorical columns, label column, etc.
   const config = {
     labelHeading: 'illness',
     labelType: 'categorical',
@@ -27,13 +33,17 @@ const test = async () => {
   const naiveBayes = new NaiveBayesClassifier();
   console.assert(Object.keys(naiveBayes.headers).length === 0, 'headers not null');
 
+  // define which columns are numerical and which are categorical
   const modelConfig = {
     numericalCols: ['income'],
     categoricalCols: ['city', 'gender']
   };
+
+  // train naive bayes model with features, labels, column headers, and model config
   naiveBayes.train(features, labels, manipulator.getColumnHeaders(), modelConfig);
   console.assert(Object.keys(naiveBayes.headers).length !== 0, 'headers null');
 
+  // create sample, predict
   const x = [0, 0, 100000]; // ['dallas', 'female', 100000]
   const pred = naiveBayes.predict(x);
   console.assert(pred === 0 || pred === 1, 'invalid class label');

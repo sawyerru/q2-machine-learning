@@ -1,3 +1,8 @@
+/*
+Apriori Association Tests
+Author: Sawyer Ruben
+ */
+
 const LinearRegression = require('../linear-regression/linear-regression');
 const DataManipulator = require('../data-manipulator/data-manipulator');
 
@@ -8,9 +13,10 @@ const test = async () => {
   const url = 'https://raw.githubusercontent.com/sawyerru/q2-data/master/student-data-1class.csv';
   const resp = await got(url);
   const manip = new DataManipulator();
-  await manip.loadCsv(resp.body);
 
-  const config = {
+  await manip.loadCsv(resp.body); // process csv into proper datatypes
+
+  const config = { // define config about the data
     labelHeading: 'G3',
     labelType: 'numeric',
     excludeColumns: [],
@@ -35,33 +41,36 @@ const test = async () => {
     }
   };
 
-  manip.processData(config);
-  manip.normalize();
+  manip.processData(config); // process raw data into configured data
+  manip.normalize();         // normalize points with default z-score method
 
   console.assert(manip.X[0].length > 0 && manip.X.length > 0, 'X not defined');
   console.assert(manip.Y.length > 0, 'Y not defined');
   console.assert(manip.X.length === manip.Y.length, 'data lost');
 
-  const [feats, labels] = manip.exportData();
-  console.assert(feats.shape[0] === labels.shape[0], 'X and Y have different number of samples')
-  const dims = feats.shape[1];
+  const [feats, labels] = manip.exportData(); // export data as tensors
+  console.assert(feats.shape[0] === labels.shape[0], 'X and Y have different number of samples');
+  const dims = feats.shape[1]; // get number of dimensions
 
+  // create linear regression model
   const linearRegression = new LinearRegression();
 
   try { linearRegression.getModel(); }
   catch(err) { console.assert(err !== undefined, 'Error not caught'); }
 
-  linearRegression.build(dims);
+  linearRegression.build(dims); //build linear regression model based on number of input dimensions
 
   const model = linearRegression.getModel();
   console.assert(model !== undefined, 'model not created');
 
   console.assert(linearRegression.trainingLogs === undefined, 'training logs not null');
-  await linearRegression.train(feats, labels);
+  await linearRegression.train(feats, labels); // Train linear regression model based on features and labels
   console.assert(linearRegression.trainingLogs !== undefined, 'training logs null');
 
   const [weight, bias] = linearRegression.getWeightsAndBias();
   console.assert(weight.length !== 0 && bias.length !== 0, 'no weight or bias vectors');
+
+  // *** Clean model to remove unneeded tensors and lighten browser load in memory ***
   linearRegression.clean();
 
   console.log('All Tests Passed');
