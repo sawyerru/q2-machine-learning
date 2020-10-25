@@ -252,4 +252,7 @@ class DecisionTreeClassifier extends BaseModel{
    
 }
 
-module.exports = DecisionTreeClassifier;
+module.exports = {
+    DecisionTreeClassifier,
+    getMostFrequent
+};

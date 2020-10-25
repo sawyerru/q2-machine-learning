@@ -65,10 +65,9 @@ class LinearRegression extends BaseModel {
      * ( ex. await linearRegression.train(X, Y); )
      * @param {Tensor} X 
      * @param {Tensor} Y 
-     * @param {Bool} display 
+     * @param {HTML Element | tf.visor} surface to display chart on
      */
-    async train(X, Y, display=false) {
-        const surface = document.getElementById('lossCanvas');
+    async train(X, Y, surface= undefined) {
         const trainLogs = [];
         const start = new Date().getTime();
         const trainingObject = await this._model.fit(X, Y,
@@ -76,10 +75,10 @@ class LinearRegression extends BaseModel {
             epochs: this._epochs,
             verbose: this._verbose, 
             batchSize: this._batchSize, 
-            callbacks: tf.callbacks.earlyStopping({monitor: 'val_acc'}),
+            // callbacks: tf.callbacks.earlyStopping({monitor: 'val_acc'}),
             callbacks: {
                 onEpochEnd: (epoch, log) => {
-                    if (display) {
+                    if (surface !== undefined ) {
                         trainLogs.push(log);
                         tfvis.show.history(surface, trainLogs, ['loss', 'acc'])
                         console.log(`Epoch ${epoch} yeilded`, log);
@@ -91,7 +90,7 @@ class LinearRegression extends BaseModel {
                 onTrainEnd: (log) => {
                     const end = new Date().getTime();
                     const runtime = (end  - start) / 1000;
-                    alert(`Training Finished in ${runtime}s`)
+                    console.log(`Training Finished in ${runtime}s`)
                 },
             },
             shuffle: true,

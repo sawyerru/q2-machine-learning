@@ -155,11 +155,11 @@ class NaiveBayesClassifier extends BaseModel {
             // calculate bayes probability for each label;
             let p = 1
             for (let f = 0; f < X.length; f++) {
-                if (this._pCategory[f] != -1 && this._pConditional != -1 && this._pStatistics[f] == -1) { // Categorical Variable
+                if (this._pCategory[f] !== -1 && this._pConditional !== -1 && this._pStatistics[f] === -1) { // Categorical Variable
                     const cond = String(X[f]) + '|' + String(i);
                     p *= this._pConditional[f][cond];
                 }
-                else if (this._pStatistics[f] != -1) { // Numerical Variable
+                else if (this._pStatistics[f] !== -1) { // Numerical Variable
                     const ndist = NormalDist(X[f], this._pStatistics[f].mean[i], this._pStatistics[f].std[i]);
                     p *= ndist;
 

@@ -5,7 +5,7 @@
  */
 
 const BaseModel = require('../base-model');
-const DecisionTreeClassifier = require('./decision-tree');
+const dt = require('./decision-tree');
 
 /**
  * 
@@ -46,7 +46,7 @@ class RandomForestClassifier extends BaseModel {
             const bootstrapData = await generateBootstrap(fullData);
 
             // Construct Tree using bootstrapped data and random subset of variables
-            const tree = new DecisionTreeClassifier();
+            const tree = new dt.DecisionTreeClassifier();
             tree.construct(bootstrapData, false, true);
 
             // Add tree to list 
@@ -60,8 +60,7 @@ class RandomForestClassifier extends BaseModel {
         }
         let output = [];
         for (let i = 0; i < this.forest.length; i++) {
-            const pred = this.forest[i].predict(X);
-            output[i] = pred;
+            output[i] = this.forest[i].predict(X);
         }
 
         return dt.getMostFrequent(output, true)

@@ -17,7 +17,7 @@ const test = async () => {
     console.assert(clust.centroids.length === 3, 'Cluster Class not created 3 cetroids');
 
     const pred = clust.predict(manip.fullData[0]);
-    console.assert(pred > 3 || pred < 0, 'Prediction not within clasification range')
+    console.assert(pred <= 2 || pred >= 0, 'Prediction not within clasification range')
 
     clust.clean();
 

@@ -103,7 +103,7 @@ class NeuralNetwork extends BaseModel {
             epochs: this._epochs,
             verbose: this._verbose, 
             batchSize: this._batchSize, 
-            callbacks: tf.callbacks.earlyStopping({monitor: 'val_acc'}),
+            // callbacks: tf.callbacks.earlyStopping({monitor: 'val_acc'}),
             callbacks: {
                 onEpochEnd: (epoch, log) => {
                     if (surface !== undefined) {

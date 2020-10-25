@@ -1,30 +1,26 @@
 const RandomForestClassifier = require('../decision-trees/random-forest');
 const DataManipulator = require('../data-manipulator/data-manipulator');
 
+const got = require('got');
+
 const test = async () => {
   console.log('Random Forest Tests');
-    const url = 'https://raw.githubusercontent.com/sawyerru/q2-data/master/student-data-5_class.csv';
-    const manipulator = new DataManipulator();
-    await manipulator.loadCsv(url);
-    const trainData = manipulator.fullData.slice(1, 101);
-    const testData = manipulator.fullData.slice(101, manipulator.fullData.length);
-    const forest = new RandomForestClassifier();
-    await forest.build(trainData);
+  const url = 'https://raw.githubusercontent.com/sawyerru/q2-data/master/student-data-5_class.csv';
+  const resp = await got(url);
+  const manipulator = new DataManipulator();
+  await manipulator.loadCsv(resp.body);
+  console.assert(manipulator.fullData.length > 0, 'Data not loaded successfully ');
 
-    // let correctClassCount = 0;
-    // for (let i = 0; i < testData.length; i++) {
-    //   const sample = testData[i];
-    //   const label = sample.pop();
-    //   const prediction = forest.predict(sample);
+  const trainData = manipulator.fullData.slice(1, 101);
+  const testData = manipulator.fullData.slice(101, manipulator.fullData.length);
 
-    //   this.jsonData[i].class5 = Number(label);
-    //   this.jsonData[i].rf = Number(prediction);
+  const forest = new RandomForestClassifier();
+  console.assert(forest.forest.length === 0, 'invalid construction');
+  await forest.build(trainData);
+  console.assert(forest.forest.length > 0, 'invalid construction');
 
-    //   if (this.jsonData[i].class5 === this.jsonData[i].rf) {
-    //     correctClassCount += 1;
-    //   }
-    // }
-    // this.rf_acc = (correctClassCount / testData.length) * 100;
+  const pred = forest.predict(testData);
+  console.assert(pred > 0, 'invalid prediction');
 
   console.log('All Tests Passed');
 }

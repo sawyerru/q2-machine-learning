@@ -1,4 +1,4 @@
-const DecisionTreeClassifier = require('../decision-trees/decision-tree');
+const dt = require('../decision-trees/decision-tree');
 const DataManipulator = require('../data-manipulator/data-manipulator');
 
 const got = require('got');
@@ -15,7 +15,7 @@ const test = async () => {
   const train = manip.fullData.slice(100, manip.fullData.length);
   const test = manip.fullData.slice(1, 100);
 
-  const decisionTree = new DecisionTreeClassifier();
+  const decisionTree = new dt.DecisionTreeClassifier();
 
   try {
     const model = decisionTree.getModel();
